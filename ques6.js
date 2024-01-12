@@ -101,10 +101,12 @@ reviews=[
 
 var users=new Set();
 
-function getPositive(){
-    let len=Object.keys(reviews);
+function getPositive(d1,d2){
+    let len=Object.keys(reviews).length;
+    console.log(len);
+
     for(let i=0;i<len;i++){
-        let r_name=data[i].reviewer_name;
+        let r_name=reviews[i].reviewer_name;
         users.add(r_name);
     }
 
@@ -112,17 +114,71 @@ function getPositive(){
     let ulen=users.size;
 
     let user_pos=[];
+
     for(let i=0;i<ulen;i++){
         user_pos[i]=0;
     }
 
-    for(let i=0;i<ulen;i++){
+    console.log(user_pos);
+    
+    let cnt=0;
+
+  for(let i of users){
         for(let j=0;j<len;j++){
-            if(users[i]== reviews[j].reviewer_name && reviews[j].type=='positive'){
-                user_pos[i]=user_pos[i]+1;
+            if(i== reviews[j].reviewer_name && reviews[j].type=='positive' && reviews[j].date> d1 && reviews[j].date<d2){
+                user_pos[cnt]=user_pos[cnt]+1;
+                console.log(i+" "+reviews[j].reviewer_name);
             }
         }
+        cnt=cnt+1;
     }
-    console.log(user_pos);
+    console.log(user_pos+" "+user_pos.length);
+    
+    let maxr=-100;
+    index=0;
+    for(let i=0;i<user_pos.length;i++){
+        if(maxr<user_pos[i]){
+            maxr=user_pos[i];
+            index=i;
+        }
+    }
+    
+    console.log("user_id having max positive reviews : "+index);
+    
+}
 
+function getNegative(d1,d2){
+    let len=Object.keys(reviews).length;
+    console.log(users);
+    let ulen=users.size;
+
+    let user_neg=[];
+    for(let i=0;i<ulen;i++){
+        user_neg[i]=0;
+    }
+    console.log(user_neg);
+    
+let cnt=0;
+  for(let i of users){
+        for(let j=0;j<len;j++){
+            if(i== reviews[j].reviewer_name && reviews[j].type=='negative' && reviews[j].date> d1 && reviews[j].date<d2){
+                user_neg[cnt]=user_neg[cnt]+1;
+                console.log(i+" "+reviews[j].reviewer_name);
+            }
+        }
+        cnt=cnt+1;
+    }
+    console.log(user_neg+" "+user_neg.length);
+    
+    let maxr=-100;
+    index=0;
+    for(let i=0;i<user_neg.length;i++){
+        if(maxr<user_neg[i]){
+            maxr=user_neg[i];
+            index=i;
+        }
+    }
+    
+    console.log("user_id having max positive reviews : "+index);
+    
 }
